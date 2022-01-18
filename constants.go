@@ -1,5 +1,6 @@
 package main
 
 const (
-	port = "8080"
+	port         = "8080"
+	debugLogging = true
 )
