@@ -1,6 +1,6 @@
 module github.com/satheshshiva/tradingview-2-exchange
 
-go 1.17
+go 1.16
 
 require github.com/rs/zerolog v1.26.1
 

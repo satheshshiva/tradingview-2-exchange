@@ -5,10 +5,10 @@ run:
 	go run .
 
 deploy:
-	gcloud app deploy
+	gcloud -q app deploy
 
 prerequisite: #sudo recommended. After install run chown -R username: <install-dir>
-	curl https://sdk.cloud.google.com | bash
+	curl https://sdk.cloud.google.com | zsh
 	gcloud init
 
 tail:
@@ -16,3 +16,6 @@ tail:
 
 versions:
 	gcloud app versions list
+
+browse:
+	gcloud app browse

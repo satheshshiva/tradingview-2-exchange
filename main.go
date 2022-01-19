@@ -7,6 +7,7 @@ import (
 	"github.com/satheshshiva/go-banner-printer/banner"
 	handlers "github.com/satheshshiva/tradingview-2-exchange/services"
 	"github.com/satheshshiva/tradingview-2-exchange/services/tradingview"
+	"github.com/satheshshiva/tradingview-2-exchange/util"
 
 	"net/http"
 	"os"
@@ -44,7 +45,11 @@ func initLogger() {
 	} else {
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
-	//initilize loggers
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	//beautify logger for local. Output only json logging in production
+	if !util.IsProd() {
+		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout})
+	}
 	log.Logger = log.With().Caller().Logger()
+	// to easily search the manual logs in GCP. use `jsonPayload.appname:"tradingview-2-exchange"`
+	log.Logger = log.With().Str("appname", "tradingview-2-exchange").Logger()
 }
