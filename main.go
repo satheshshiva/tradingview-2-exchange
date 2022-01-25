@@ -6,8 +6,10 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/satheshshiva/go-banner-printer/banner"
 	handlers "github.com/satheshshiva/tradingview-2-exchange/services"
+	"github.com/satheshshiva/tradingview-2-exchange/services/binance"
 	"github.com/satheshshiva/tradingview-2-exchange/services/tradingview"
 	"github.com/satheshshiva/tradingview-2-exchange/util"
+	"strings"
 
 	"net/http"
 	"os"
@@ -29,9 +31,31 @@ func main() {
 
 	//initialize handler
 	handlers.RegisterRootEndpoint("/")
-	tv := tradingview.New()
-	if err := tv.RegisterHandler("/tradingview"); err != nil {
-		log.Fatal().Msgf("error occured while registering tradingview handler: %s", err)
+
+	// tradingview handler and exchange service initialization
+	if apiKey, ok := os.LookupEnv("BINANCE_API_KEY"); ok {
+		if apiSecret, ok := os.LookupEnv("BINANCE_API_SECRET"); ok {
+			var isProdEnv, tvPassphrase string
+			isProd := false
+			if isProdEnv, ok = os.LookupEnv("BINANCE_PRODUCTION"); ok {
+				if strings.ToLower(isProdEnv) == "true" {
+					isProd = true
+				}
+			}
+			if tvPassphrase, ok = os.LookupEnv("TV_PASSPHRASE"); !ok {
+				log.Fatal().Msg("TV_PASSPHRASE env not set")
+			}
+
+			b := binance.New(apiKey, apiSecret, isProd)
+			tv := tradingview.New(b, tvPassphrase)
+			if err := tv.RegisterHandler("/tradingview"); err != nil {
+				log.Fatal().Msgf("Error occured while registering tradingview handler: %s", err)
+			}
+		} else {
+			log.Fatal().Msgf("No ENV variable BINANCE_API_SECRET")
+		}
+	} else {
+		log.Fatal().Msgf("No ENV variable BINANCE_API_KEY")
 	}
 
 	//start the server

@@ -1,12 +1,17 @@
 package util
 
-import "os"
+import (
+	"os"
+	"strings"
+)
 
 var isProd = false
 
 func init() {
-	if _, ok := os.LookupEnv("PRODUCTION"); ok {
-		isProd = true
+	if isProdEnv, ok := os.LookupEnv("PRODUCTION"); ok {
+		if strings.ToLower(isProdEnv) == "true" {
+			isProd = true
+		}
 	}
 }
 func IsProd() bool {
