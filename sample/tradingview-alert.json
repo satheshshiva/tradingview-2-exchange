@@ -1,0 +1,10 @@
+{
+  "strategy": "BB strategy",
+  "passphrase": "<passphrase>",
+  "side":"{{strategy.order.action}}",
+  "size": {{strategy.order.contracts}},
+  "time": "{{timenow}}",
+  "ticker":"BTCPERP" ,
+  "close":{{close}},
+  "type": "MARKET"
+}

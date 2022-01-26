@@ -1,6 +1,10 @@
 # TradingView-2-Exchange
 This application is used to place a buy/sell order in Binance when your TradingView strategy triggers a long/short entry.
 
+#Prerequisites
+Go 1.16.
+At this time GCP(Google Cloud Platform) supports only 1.16
+
 ## Environmental Variables
 1. BINANCE_API_KEY - Api key
 2. BINANCE_API_SECRET - Api secret

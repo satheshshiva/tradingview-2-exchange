@@ -42,7 +42,7 @@ func (b *binance) Trade(n *exchange.NewTrade) error {
 		Side:      strings.ToUpper(n.Side),
 		OrderType: n.Type,
 		Qty:       n.Qty,
-		Timestamp: strconv.FormatInt(timestamp.UnixMilli(), 10),
+		Timestamp: strconv.FormatInt(timestamp.UnixNano()/int64(time.Millisecond), 10),
 	}
 
 	var v url2.Values
@@ -56,13 +56,13 @@ func (b *binance) Trade(n *exchange.NewTrade) error {
 	log.Debug().Msg(url)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
-		log.Err(err)
+		log.Err(err).Msg("error creating http request")
 		return err
 	}
 	req.Header.Set(headerApiKey, b.apiKey)
 	client := &http.Client{}
 	if resp, err := client.Do(req); err != nil {
-		log.Err(err).Msgf("error response from binance new trade request api end point")
+		log.Err(err).Msgf("error from binance api call")
 		return err
 	} else {
 		respStr, _ := ioutil.ReadAll(resp.Body)
@@ -70,7 +70,7 @@ func (b *binance) Trade(n *exchange.NewTrade) error {
 			log.Info().Msgf("Response from binance new trade api HTTP:%v:%s", resp.StatusCode, respStr)
 		} else {
 			err = errors.New(fmt.Sprintf("Response from binance new trade api HTTP:%v:%s", resp.StatusCode, respStr))
-			log.Err(err)
+			log.Err(err).Msg("error from binance api call")
 			return err
 		}
 	}

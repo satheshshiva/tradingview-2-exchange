@@ -59,7 +59,7 @@ func main() {
 	}
 
 	//start the server
-	log.Info().Msgf("Starting server on port: %v", serverPort)
+	log.Trace().Msgf("Starting server on port: %v", serverPort)
 	log.Fatal().Err(http.ListenAndServe(fmt.Sprintf(":%v", serverPort), nil)).Msg("")
 }
 
