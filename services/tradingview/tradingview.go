@@ -53,12 +53,16 @@ func (tv *TradingView) handle() http.HandlerFunc {
 		}
 
 		//call the exchange
-		tv.ex.Trade(&exchange.NewTrade{
+		err = tv.ex.Trade(&exchange.NewTrade{
 			Symbol: p.Ticker,
 			Side:   p.Side,
 			Type:   p.Type,
 			Qty:    p.Size,
 		})
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 }
 

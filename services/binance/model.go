@@ -13,5 +13,4 @@ type newTradeRequest struct {
 	OrderType string  `url:"type"`
 	Qty       float32 `url:"quantity"`
 	Timestamp string  `url:"timestamp"`
-	Signature string  `url:"signature"`
 }
