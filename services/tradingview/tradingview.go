@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/rs/zerolog/log"
 	"github.com/satheshshiva/tradingview-2-exchange/services/exchange"
+	"github.com/satheshshiva/tradingview-2-exchange/util"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -36,7 +37,7 @@ func (tv *TradingView) handle() http.HandlerFunc {
 		if err != nil {
 			log.Err(err).Msg("Error reading tradingview request body")
 		}
-		log.Info().Msgf("Received TradingView Request:")
+		log.Info().Msgf("Received TradingView Request: %s", util.RedactJsonField(string(b), "passphrase"))
 
 		// unmarshal input data
 		p := &Payload{}

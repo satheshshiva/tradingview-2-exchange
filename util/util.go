@@ -2,6 +2,7 @@ package util
 
 import (
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -16,4 +17,9 @@ func init() {
 }
 func IsProd() bool {
 	return isProd
+}
+
+func RedactJsonField(input string, fieldName string) string {
+	m1 := regexp.MustCompile(`"` + fieldName + `":\s*".*"`)
+	return m1.ReplaceAllString(input, `"`+fieldName+`": `+`"<redacted>"`)
 }

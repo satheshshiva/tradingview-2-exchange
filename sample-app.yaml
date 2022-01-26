@@ -1,0 +1,8 @@
+## Sample version of the `app.yaml` used for GCP deployment
+runtime: go116
+env_variables:
+  PRODUCTION: true
+  TV_PASSPHRASE: <TradingView passphrase>
+  BINANCE_API_KEY: <Binance-api-key>
+  BINANCE_API_SECRET: <Binance-api-secret>
+  BINANCE_PRODUCTION: false
