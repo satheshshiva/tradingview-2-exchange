@@ -31,7 +31,7 @@ func New(apiKey string, apiSecret string, prodEnv bool) *binance {
 	} else {
 		url = testnetUrl
 	}
-	log.Info().Msgf("Initializing binance rest api with url %s", url)
+	log.Trace().Msgf("Initializing binance rest api with url %s", url)
 	return &binance{url: url, apiKey: apiKey, apiSecret: apiSecret}
 }
 
@@ -62,19 +62,23 @@ func (b *binance) Trade(n *exchange.NewTrade) error {
 	req.Header.Set(headerApiKey, b.apiKey)
 	client := &http.Client{}
 	if resp, err := client.Do(req); err != nil {
-		log.Err(err).Msgf("error from binance api call")
+		log.Err(err).Msgf(err.Error())
 		return err
 	} else {
 		respStr, _ := ioutil.ReadAll(resp.Body)
 		if resp.StatusCode == http.StatusOK {
-			log.Info().Msgf("Response from binance new trade api HTTP:%v:%s", resp.StatusCode, respStr)
+			log.Info().Msgf("Successful response from binance new trade api HTTP:%v:%s", resp.StatusCode, respStr)
 		} else {
 			err = errors.New(fmt.Sprintf("Response from binance new trade api HTTP:%v:%s", resp.StatusCode, respStr))
-			log.Err(err).Msg("error from binance api call")
+			log.Err(err).Msg(err.Error())
 			return err
 		}
 	}
 	return nil
+}
+
+func (b *binance) GetApiUrl() string {
+	return b.url
 }
 
 func (b *binance) signature(qp string) string {

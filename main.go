@@ -7,6 +7,7 @@ import (
 	"github.com/satheshshiva/go-banner-printer/banner"
 	handlers "github.com/satheshshiva/tradingview-2-exchange/services"
 	"github.com/satheshshiva/tradingview-2-exchange/services/binance"
+	"github.com/satheshshiva/tradingview-2-exchange/services/exchange"
 	"github.com/satheshshiva/tradingview-2-exchange/services/tradingview"
 	"github.com/satheshshiva/tradingview-2-exchange/util"
 	"strings"
@@ -44,6 +45,8 @@ func main() {
 			}
 			if tvPassphrase, ok = os.LookupEnv("TV_PASSPHRASE"); !ok {
 				log.Fatal().Msg("TV_PASSPHRASE env not set")
+			} else if tvPassphrase == "" {
+				log.Fatal().Msg("TV_PASSPHRASE is empty")
 			}
 
 			b := binance.New(apiKey, apiSecret, isProd)
@@ -51,6 +54,7 @@ func main() {
 			if err := tv.RegisterHandler("/tradingview"); err != nil {
 				log.Fatal().Msgf("Error occured while registering tradingview handler: %s", err)
 			}
+			exchange.RegisterGetApiUrlHandler(b, "/getexchangeurl")
 		} else {
 			log.Fatal().Msgf("No ENV variable BINANCE_API_SECRET")
 		}
