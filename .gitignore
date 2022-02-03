@@ -1,6 +1,6 @@
 bin/
 .idea/
-app.yaml
+/app.yaml
 
 ### macOS template
 # General

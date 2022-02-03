@@ -1,0 +1,10 @@
+{
+  "strategy": "BB strategy",
+  "passphrase": "<passphrase>",
+  "side":"{{strategy.order.action}}",
+  "size": {{strategy.order.contracts}},
+  "time": "{{timenow}}",
+  "ticker":"BTCUSDT" ,
+  "close":{{close}},
+  "type": "MARKET"
+}
