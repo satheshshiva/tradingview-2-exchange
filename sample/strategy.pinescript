@@ -1,0 +1,60 @@
+//@version=5
+strategy("BB strategy Production", overlay=true, initial_capital=100, commission_type=strategy.commission.percent, commission_value=0.04)
+
+// truncate() truncates a given number
+// to a certain number of decimals
+truncate(number, decimals) =>
+    factor = math.pow(10, decimals)
+    int(number * factor) / factor
+
+_close = close
+length = input.int(60, minval=1)    //default:20 , optimized value:60
+mult = input.float(2.2, minval=0.001, maxval=50)    //default:2.0, optimized value:2.2
+basis = ta.sma(_close, length)
+stopPercent=9  //Stop Loss percentage for a single trade
+stopPercent:=stopPercent/100
+
+dev = mult * ta.stdev(_close, length)
+upper = basis + dev
+lower = basis - dev
+
+// For debugging
+plot(basis, color=color.yellow, title="Basis")
+plot(lower, color=color.blue, title="Lower")
+plot(upper, color=color.blue, title="Upper")
+plotchar(strategy.equity, "Equity", "", location.top, size = size.tiny)
+plotchar(strategy.position_size, "Position Size", "", location.top, size = size.tiny)
+plotchar(strategy.position_avg_price, "Position's Avg Price", "", location.top, size = size.tiny)
+
+quantity = truncate(strategy.equity/_close,3)
+//LONG Entry
+if (ta.crossover(_close, lower) and _close<basis)
+   // if(lower>stopLimit)
+     //   stopLimit:=lower
+    comment1=str.format("LONG:{0}",quantity)
+    strategy.entry("BBandLE",strategy.long, qty=quantity, oca_name="BollingerBands", comment=comment1)
+
+//SHORT Entry
+if (ta.crossunder(_close, upper) and _close>basis)
+    comment1=str.format("SHORT:{0}",quantity)
+    strategy.entry("BBandSE",strategy.short, qty=quantity, oca_name="BollingerBands", comment=comment1)
+
+// Determine stop loss price
+longStopPrice  = strategy.position_avg_price * (1 - stopPercent)
+shortStopPrice = strategy.position_avg_price * (1 + stopPercent)
+
+plotchar(longStopPrice, "Long Stop Loss", "", location.top, size = size.tiny)
+plotchar(shortStopPrice, "Short Stop Loss", "", location.top, size = size.tiny)
+
+
+//Submit exit orders based on calculated stop loss price
+if (strategy.position_size > 0)
+    strategy.exit(id="BBandLE", stop=longStopPrice, comment=str.tostring(longStopPrice))
+
+if (strategy.position_size < 0)
+    strategy.exit(id="BBandSE", stop=shortStopPrice, comment=str.tostring(shortStopPrice))
+
+//Risk
+strategy.risk.max_drawdown(30, strategy.percent_of_equity)
+
+

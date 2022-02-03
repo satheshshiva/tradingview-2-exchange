@@ -53,7 +53,7 @@ func (b *binance) Trade(n *exchange.NewTrade) error {
 	}
 	qp := v.Encode()
 	url := b.url + newTradeEndpoint + "?" + qp + "&signature=" + b.signature(qp)
-	log.Debug().Msg(url)
+	log.Trace().Msg(url)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		log.Err(err).Msg("error creating http request")
