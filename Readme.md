@@ -24,7 +24,7 @@ At this time GCP(Google Cloud Platform) supports only 1.16
 ### Samples
 The samples folder contains,
 1. [app.yaml](sample/app.yaml) - For google cloud console deployment
-2. [strategy.pinescript](sample/strategy.pinescript) - a sample stragegy written in pine script. The script has a 70% success rate on BTCUSDT
+2. [strategy.pine](sample/strategy.pine) - a sample stragegy written in pine script. The script has a 70% success rate on BTCUSDT
 3. [tradingview-alert.json](sample/tradingview-alert.json) -  a sample tradingview webhook alert
 
 
