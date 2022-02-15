@@ -2,6 +2,7 @@ bin/
 .idea/
 .vscode/
 /app.yaml
+/app_dev.yaml
 
 ### macOS template
 # General

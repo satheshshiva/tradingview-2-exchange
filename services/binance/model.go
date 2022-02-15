@@ -4,7 +4,6 @@ type binance struct {
 	url       string
 	apiKey    string
 	apiSecret string
-	prodEnv   bool
 }
 
 type newTradeRequest struct {
