@@ -2,21 +2,24 @@ package tradingview
 
 import (
 	"encoding/json"
-	"github.com/rs/zerolog/log"
-	"github.com/satheshshiva/tradingview-2-exchange/services/exchange"
-	"github.com/satheshshiva/tradingview-2-exchange/util"
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"github.com/rs/zerolog/log"
+	"github.com/satheshshiva/tradingview-2-exchange/services/exchange"
+	"github.com/satheshshiva/tradingview-2-exchange/services/twitter"
+	"github.com/satheshshiva/tradingview-2-exchange/util"
 )
 
 type TradingView struct {
-	ex         exchange.Exchange
-	passphrase string
+	ex			exchange.Exchange
+	passphrase	string
+	twtr		*twitter.Twitter
 }
 
-func New(ex exchange.Exchange, passphrase string) *TradingView {
-	return &TradingView{ex: ex, passphrase: passphrase}
+func New(ex exchange.Exchange, passphrase string, twtr *twitter.Twitter) *TradingView {
+	return &TradingView{ex: ex, passphrase: passphrase, twtr: twtr}
 }
 
 func (tv *TradingView) RegisterHandler(subUrl string) error {
@@ -53,7 +56,8 @@ func (tv *TradingView) handle() http.HandlerFunc {
 			return
 		}
 
-		//call the exchange
+		go func ()  {
+			//call the exchange
 		err = tv.ex.Trade(&exchange.NewTrade{
 			Symbol: p.Ticker,
 			Side:   p.Side,
@@ -64,6 +68,14 @@ func (tv *TradingView) handle() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		}()
+
+		if p.PostTweet && tv.twtr!=nil{
+			go func ()  {
+				tv.twtr.TweetTrade(p.Side, p.Comment)
+			}()
+		}
+		
 	}
 }
 

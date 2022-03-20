@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/satheshshiva/go-banner-printer/banner"
@@ -9,8 +11,8 @@ import (
 	"github.com/satheshshiva/tradingview-2-exchange/services/binance"
 	"github.com/satheshshiva/tradingview-2-exchange/services/exchange"
 	"github.com/satheshshiva/tradingview-2-exchange/services/tradingview"
+	"github.com/satheshshiva/tradingview-2-exchange/services/twitter"
 	"github.com/satheshshiva/tradingview-2-exchange/util"
-	"strings"
 
 	"net/http"
 	"os"
@@ -50,7 +52,14 @@ func main() {
 			}
 
 			b := binance.New(apiKey, apiSecret, isProd)
-			tv := tradingview.New(b, tvPassphrase)
+			var twtr *twitter.Twitter
+			if twtrKey, ok := os.LookupEnv("TWITTER_API_KEY"); ok {
+				twtrSecret, _ := os.LookupEnv("TWITTER_API_SECRET")
+				twtrToken,_ := os.LookupEnv("TWITTER_TOKEN")
+				twtrTokenSecret,_ := os.LookupEnv("TWITTER_TOKEN_SECRET")
+				twtr = twitter.New(twtrKey, twtrSecret,twtrToken,twtrTokenSecret )
+			}
+			tv := tradingview.New(b, tvPassphrase, twtr)
 			if err := tv.RegisterHandler("/tradingview"); err != nil {
 				log.Fatal().Msgf("Error occured while registering tradingview handler: %s", err)
 			}

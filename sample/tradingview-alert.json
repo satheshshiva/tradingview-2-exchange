@@ -6,5 +6,7 @@
   "time": "{{timenow}}",
   "ticker":"BTCUSDT" ,
   "close":{{close}},
+  "comment":"{{strategy.order.comment}}",
+  "postTweet":true,
   "type": "MARKET"
 }

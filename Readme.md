@@ -1,5 +1,5 @@
 # TradingView-2-Exchange
-[TradingView](https://www.tradingview.com) provided an awesome feature to create a strategy in pinescript and backtest the strategy. The missing functionality in trading view is the lack of automatically placing the buy/sell orders in your exchange account, so that your strategy from tradingview can act like a tradingbot. This repo fixes the gap. This app acts as a bridge from your tradingview strategy to your exchange account.
+[TradingView](https://www.tradingview.com) provides an awesome feature to create a strategy using pinescript and backtest the strategy. The missing functionality in trading view is that it cannot automatically place the buy/sell orders in your exchange account. If so,then your strategy from tradingview can act like a tradingbot. This repo fixes the gap. This app acts as a bridge from your tradingview strategy to your exchange account.
 
 ### How its done?
 This app takes advantage of the Alarm alert for the strategy in tradingview. To enable automatic trading in the tradingview, enable alarm and then enable the "Webhook URL" in the alert window. Deploy this application to cloud services like GCP(Google Cloud Console)/AWS or any other services and provide the application URL in the Webhook URL field. Replace the Message field with [trading-view-alert.json](sample/trading-view-alert.json). Whenever tradingview raises an alarm alert, this application will be called and buy/sell orders will be placed in your exchange account.
@@ -11,8 +11,7 @@ At this time GCP(Google Cloud Platform) supports only 1.16
 3. Binance Exchange account with API access enabled.
 
 ### Supported exchanges
-1. Binance - complete support
-2. Kucoin - tentative
+Binance
 
 ### Environmental Variables
 1. BINANCE_API_KEY - Api key

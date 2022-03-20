@@ -9,5 +9,7 @@ type Payload struct {
 	Exchange   string  `json:"exchange"` // exchange in which the chart was made
 	Close      float32 `json:"close"`    // close price
 	Passphrase string  `json:"passphrase"`
+	Comment		string	 `json:"comment"`
+	PostTweet	bool	 `json:"postTweet"`
 	Type       string  `json:"type"`
 }
