@@ -3,6 +3,7 @@ bin/
 .vscode/
 /app.yaml
 /app_dev.yaml
+__debug_bin
 
 ### macOS template
 # General

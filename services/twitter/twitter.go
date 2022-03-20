@@ -2,7 +2,7 @@ package twitter
 
 import (
 	"bytes"
-	"fmt"
+	"encoding/json"
 	"io/ioutil"
 	"strings"
 
@@ -27,15 +27,15 @@ func New(apiKey string, apiSecret string, accessToken string, tokenSecret string
 }
 
 func (t *Twitter)TweetTrade(side string, comment string) {
-	msg := "Automated ** Scalping Bot ** Trade Alert"
-	msg += "#Bitcoin"
+	msg := "\n\n🤖🤖 Automated ** Scalping Bot ** Trade Alert\n\n"
+	msg += "#Bitcoin\n\n"
 	switch strings.ToLower(side){
 		case strings.ToLower("buy"):
-			msg += "Long"
+			msg += "LONG 🔼\n\n"
 		case strings.ToLower("sell"):
-			msg += "Short"
+			msg += "SHORT 🔻\n\n"
 	}
-	msg+=comment
+	msg+=comment 
 	t.tweet(msg)
 }
 
@@ -43,9 +43,11 @@ func (t *Twitter)tweet(msg string) {
 	config := oauth1.NewConfig(t.ApiKey, t.ApiSecret)
     token := oauth1.NewToken(t.AccessToken, t.TokenSecret)
     httpClient := config.Client(oauth1.NoContext, token)
-
-    json_data  := []byte(`{"text": "` + msg + `"}`)
-fmt.Println(string(json_data))
+	values := map[string]string{"text": msg}
+    json_data, err := json.Marshal(values)
+    if err != nil {
+		log.Err(err).Msg("Error while marshaling Twitter API request")
+    }
     resp, err := httpClient.Post(postTweetEndpoint, "application/json", bytes.NewBuffer(json_data ))
 	if err != nil {
 		log.Err(err).Msg("Error while calling Twitter API")
