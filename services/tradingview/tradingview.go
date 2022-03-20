@@ -72,7 +72,7 @@ func (tv *TradingView) handle() http.HandlerFunc {
 
 		if p.PostTweet && tv.twtr!=nil{
 			go func ()  {
-				tv.twtr.TweetTrade(p.Side, p.Comment)
+				tv.twtr.TweetTrade(p.Side, p.Close, p.Comment)
 			}()
 		}
 		

@@ -3,6 +3,7 @@ package twitter
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"strings"
 
@@ -26,7 +27,7 @@ func New(apiKey string, apiSecret string, accessToken string, tokenSecret string
 	return &Twitter{ApiKey: apiKey, ApiSecret: apiSecret, AccessToken: accessToken, TokenSecret: tokenSecret}
 }
 
-func (t *Twitter)TweetTrade(side string, comment string) {
+func (t *Twitter)TweetTrade(side string, price float32, comment string) {
 	msg := "\n\n🤖🤖 Automated ** Scalping Bot ** Trade Alert\n\n"
 	msg += "#Bitcoin\n\n"
 	switch strings.ToLower(side){
@@ -35,6 +36,7 @@ func (t *Twitter)TweetTrade(side string, comment string) {
 		case strings.ToLower("sell"):
 			msg += "SHORT 🔻\n\n"
 	}
+	msg+=fmt.Sprintf("Price: %f \n\n", price)
 	msg+=comment 
 	t.tweet(msg)
 }
