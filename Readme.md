@@ -7,8 +7,8 @@ This application takes advantage of the alarm alert for the strategy in TradingV
 ### Benefits
 You can achieve some new ways of placing order that could never be achieved using the limit/stop orders
 1. Create a tradingbot based on the TradingView pinescript strategy
-1. Set an alarm for a trendline to buy/sell/reduceonly
-1. Set an alarm on your favorite indicator to buy/sell/reduceonly
+1. Set an alarm for a trendline to buy/sell
+1. Set an alarm on your favorite indicator to buy/sell
 
 ### Prerequisites
 1. Go 1.16.
