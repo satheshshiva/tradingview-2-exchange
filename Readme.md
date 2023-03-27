@@ -1,8 +1,14 @@
 # TradingView-2-Exchange
-[TradingView](https://www.tradingview.com) provided an awesome feature to create a strategy in pinescript and backtest the strategy. The missing functionality in trading view is the lack of automatically placing the buy/sell orders in your exchange account, so that your strategy from tradingview can act like a tradingbot. This repo fixes the gap. This app acts as a bridge from your tradingview strategy to your exchange account.
+[TradingView](https://www.tradingview.com) provides an awesome feature to create a strategy in PineScript and backtest it. However, TradingView lacks the functionality to automatically place buy/sell orders in your exchange account so that your TradingView strategy can act like a trading bot. This repository fixes that gap by acting as a bridge between your TradingView strategy and your exchange account.
 
 ### How its done?
-This app takes advantage of the Alarm alert for the strategy in tradingview. To enable automatic trading in the tradingview, enable alarm and then enable the "Webhook URL" in the alert window. Deploy this application to cloud services like GCP(Google Cloud Console)/AWS or any other services and provide the application URL in the Webhook URL field. Replace the Message field with [trading-view-alert.json](sample/trading-view-alert.json). Whenever tradingview raises an alarm alert, this application will be called and buy/sell orders will be placed in your exchange account.
+This application takes advantage of the alarm alert for the strategy in TradingView. To enable automatic trading in TradingView, enable the alarm and then enable the “Webhook URL” in the alert window. Deploy this application to cloud services like GCP (Google Cloud Console)/AWS or any other services and provide the application URL in the Webhook URL field. Replace the Message field with [trading-view-alert.json](sample/trading-view-alert.json). Whenever TradingView raises an alarm alert, this application will be called and buy/sell orders will be placed in your exchange account.
+
+### Benefits
+You can achieve some new ways of placing order that could never be achieved using the limit/stop orders
+1. Set an alarm for a trendline to buy/sell/reduceonly
+1. Set an alarm for an indicator to buy/sell/reduceonly
+1. Create a tradingbot based on the strategy
 
 ### Prerequisites
 1. Go 1.16.
